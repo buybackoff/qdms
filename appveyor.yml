@@ -71,11 +71,13 @@ before_package:
 
 # scripts to run after build
 after_build:
-  - ps: # Enable MSSQL named pipes
   - ps: [reflection.assembly]::LoadWithPartialName("Microsoft.SqlServer.Smo") | Out-Null
   - ps: [reflection.assembly]::LoadWithPartialName("Microsoft.SqlServer.SqlWmiManagement") | Out-Null
   - ps: $serverName = $env:COMPUTERNAME
   - ps: $instanceName = 'SQL2016'
+  - ps: $smo = 'Microsoft.SqlServer.Management.Smo.'
+  - ps: $wmi = new-object ($smo + 'Wmi.ManagedComputer')
+  - ps: # Enable MSSQL named pipes
   - ps: $uri = "ManagedComputer[@Name='$serverName']/ ServerInstance[@Name='$instanceName']/ServerProtocol[@Name='Np']"
   - ps: $Np = $wmi.GetSmoObject($uri)
   - ps: $Np.IsEnabled = $true
