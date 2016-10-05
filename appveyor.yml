@@ -71,15 +71,15 @@ before_package:
 
 # scripts to run after build
 after_build:
-  - # Enable MSSQL named pipes
-  - [reflection.assembly]::LoadWithPartialName("Microsoft.SqlServer.Smo") | Out-Null
-  - [reflection.assembly]::LoadWithPartialName("Microsoft.SqlServer.SqlWmiManagement") | Out-Null
-  - $serverName = $env:COMPUTERNAME
-  - $instanceName = 'SQL2016'
-  - $uri = "ManagedComputer[@Name='$serverName']/ ServerInstance[@Name='$instanceName']/ServerProtocol[@Name='Np']"
-  - $Np = $wmi.GetSmoObject($uri)
-  - $Np.IsEnabled = $true
-  - $Np.Alter()
+  - ps: # Enable MSSQL named pipes
+  - ps: [reflection.assembly]::LoadWithPartialName("Microsoft.SqlServer.Smo") | Out-Null
+  - ps: [reflection.assembly]::LoadWithPartialName("Microsoft.SqlServer.SqlWmiManagement") | Out-Null
+  - ps: $serverName = $env:COMPUTERNAME
+  - ps: $instanceName = 'SQL2016'
+  - ps: $uri = "ManagedComputer[@Name='$serverName']/ ServerInstance[@Name='$instanceName']/ServerProtocol[@Name='Np']"
+  - ps: $Np = $wmi.GetSmoObject($uri)
+  - ps: $Np.IsEnabled = $true
+  - ps: $Np.Alter()
 
 # to run your custom scripts instead of automatic MSBuild
 build_script:
